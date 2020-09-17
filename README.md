@@ -3,7 +3,9 @@
 
 ## 统一的成功响应
 1. 复制核心代码到自己项目中相同位置
-`/app/extend/helper.js`
+```text
+app/extend/helper.js
+```
 
 2. 控制器返回数据时，使用 ctx.helper.success 方法
 ```javascript
@@ -19,7 +21,9 @@ ctx.helper.success(data, msg)
 
 ## 统一的失败响应
 1. 复制核心代码到自己项目中相同位置
-`/app/middleware/error.js`
+```text
+/app/middleware/error.js
+```
 
 2. 加载全局中间件
 ```javascript

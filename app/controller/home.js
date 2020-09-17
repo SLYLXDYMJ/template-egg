@@ -4,9 +4,9 @@ class HomeController extends Controller {
   async index () {
     const { ctx } = this
     
-    // ctx.body = 'hi, egg';
+    ctx.body = 'hi, egg'
     // ctx.helper.success({ data: 1 })
-    ctx.throw(400, '出错了')
+    // ctx.throw(400, '出错了')
   }
 }
 
