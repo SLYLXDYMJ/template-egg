@@ -43,9 +43,16 @@ config.middleware = [
 npm i --save egg-passport passport-jwt jsonwebtoken
 ```
 
-2. 核心代码，复制到自己项目相同位置
-```text
-/app/middleware/jwt-auth.js
+2. 核心代码，复制到自己项目相同位置，并修改 app.passport.verify 逻辑
+```javascript
+// app/middleware/jwt-auth.js
+jwtAuth.init = function (app) {
+  /** ... **/
+  
+  app.passport.verify(async (ctx, jwtPayload) => {
+    return { id: 10086, name: '静态数据' }
+  })
+}
 ```
 
 3. 在 app.js 中初始化 passport-jwt
@@ -80,7 +87,25 @@ const userConfig = {
 }
 ```
 
-6. 在路由中使用中间件
+6. 在登录接口控制器使用 jsonwebtoken 生成 token
+```javascript
+// 登录控制器
+const jsonWebToken = require('jsonwebtoken')
+
+class UserController extends Controller {
+  async login () {
+    const { ctx, app } = this
+    
+    ctx.body = {
+      token: jsonWebToken.sign({
+        /** ... **/
+      }, app.config.jwt.secret)
+    }
+  }
+}
+```
+
+7. 在路由中使用鉴权中间件
 ```javascript
 // app/router.js
 module.exports = app => {
