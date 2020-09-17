@@ -44,7 +44,9 @@ npm i --save egg-passport passport-jwt jsonwebtoken
 ```
 
 2. 核心代码，复制到自己项目中
-`/app/middleware/jwt-auth.js`
+```text
+/app/middleware/jwt-auth.js
+```
 
 3. 在 app.js 中初始化 passport-jwt
 ```javascript
