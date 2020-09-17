@@ -43,7 +43,7 @@ config.middleware = [
 npm i --save egg-passport passport-jwt jsonwebtoken
 ```
 
-2. 核心代码，复制到自己项目中
+2. 核心代码，复制到自己项目相同位置
 ```text
 /app/middleware/jwt-auth.js
 ```
@@ -58,5 +58,38 @@ class AppBootHook {
     // 可以做一些数据初始化等操作，这些操作成功才会启动应用
     jwtAuth.init(this.app)
   }
+}
+```
+
+4. 开启插件
+```javascript
+// config/plugin.js
+exports.passport = {
+  enable: true,
+  package: 'egg-passport'
+}
+```
+
+5. 定义 jwt secret
+```javascript
+// config/config.default.js
+const userConfig = {
+  jwt: {
+    secret: '加密钥匙'
+  }
+}
+```
+
+6. 在路由中使用中间件
+```javascript
+// app/router.js
+module.exports = app => {
+  const { router, controller } = app
+  const jwtAuth = app.middleware.jwtAuth(
+    app.config,
+    app
+  )
+ 
+  router.get('/** ... **/', jwtAuth, /** ... **/)
 }
 ```
