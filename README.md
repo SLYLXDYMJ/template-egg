@@ -2,6 +2,9 @@
 > egg 常用代码模板
 
 ## 统一的成功响应
+> 对应的 json schema：<br/>
+> apidoc/schema/success.json
+
 1. 复制核心代码到自己项目中相同位置
 ```text
 app/extend/helper.js
@@ -20,6 +23,9 @@ ctx.helper.success(data, msg)
 ```
 
 ## 统一的失败响应
+> 对应的 json schema：<br/>
+> apidoc/schema/fail.json
+
 1. 复制核心代码到自己项目中相同位置
 ```text
 /app/middleware/error.js
@@ -45,6 +51,8 @@ ctx.throw(400, '出错了')
 ```
 
 ## jwt鉴权（passport-jwt）
+> 对应的 json schema（header）：<br/>
+> apidoc/schema/jwt-auth.json
 
 1. 安装依赖
 ```bash
@@ -130,8 +138,6 @@ module.exports = app => {
 ```
 
 ## apidoc
-> 该项目中以内置 “统一的成功响应” 和 “统一的失败响应” schema
-
 1. 安装依赖
 ```bash
 npm install -save-dev apidoc apidoc-plugin-schema
@@ -147,20 +153,22 @@ npm install -save-dev apidoc apidoc-plugin-schema
 3. 项目根目录创建 apidoc/schema 目录，并自定义 json 模型
 
 4. 写控制器时书写文档
-> 默认使用了 “统一的成功响应” 和 “统一的失败响应” 模板
 ```javascript
 /**
  * @api { post } /login 登录
  * @apiGroup 用户
  *
- * @apiParam (body) { String } username 账号
- * @apiParam (body) { String } password 密码
+ * @apiSchema (请求头) {jsonschema=../../apidoc/schema/jwt-auth.json} apiHeader
+ *
+ * @apiParam (请求体) { String } username 账号
+ * @apiParam (请求体) { String } password 密码
+ *
+ * @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
  *
  * @apiSuccess (data) { String/Number } id id
  * @apiSuccess (data) { String } name 用户名
  *
- * @apiSchema (success) {jsonschema=../../apidoc/schema/success.json} apiSuccess
- * @apiSchema (fail) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+ * @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
  */
 ```
 

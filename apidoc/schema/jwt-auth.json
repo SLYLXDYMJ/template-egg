@@ -1,0 +1,13 @@
+{
+  "title": "jwt 用户身份鉴定",
+  "type": "object",
+  "properties": {
+    "Authorization": {
+      "type": "String",
+      "description": "Bearer token"
+    }
+  },
+  "required": [
+    "Authorization"
+  ]
+}

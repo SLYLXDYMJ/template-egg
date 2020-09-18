@@ -14,6 +14,8 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "apidoc": "^0.25.0",
+    "apidoc-plugin-schema": "^0.1.8",
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
     "egg-bin": "^4.11.0",
@@ -29,6 +31,7 @@
     "start": "egg-scripts start --daemon --title=egg-server-template-egg",
     "stop": "egg-scripts stop --title=egg-server-template-egg",
     "dev": "egg-bin dev",
+    "build:docs": "apidoc -i app/ -o app/public/docs",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
