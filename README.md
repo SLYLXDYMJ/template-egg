@@ -128,3 +128,48 @@ module.exports = app => {
   router.get('/** ... **/', jwtAuth, /** ... **/)
 }
 ```
+
+## apidoc
+> 该项目中以内置 “统一的成功响应” 和 “统一的失败响应” schema
+
+1. 安装依赖
+```bash
+npm install -save-dev apidoc apidoc-plugin-schema
+```
+
+2. package.json scripts 中定义打包命令
+```json
+{
+  "build:docs": "apidoc -i app/ -o app/public/docs"
+}
+```
+
+3. 项目根目录创建 apidoc/schema 目录，并自定义 json 模型
+
+4. 写控制器时书写文档
+> 默认使用了 “统一的成功响应” 和 “统一的失败响应” 模板
+```javascript
+/**
+ * @api { post } /login 登录
+ * @apiGroup 用户
+ *
+ * @apiParam (body) { String } username 账号
+ * @apiParam (body) { String } password 密码
+ *
+ * @apiSuccess (data) { String/Number } id id
+ * @apiSuccess (data) { String } name 用户名
+ *
+ * @apiSchema (success) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+ * @apiSchema (fail) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+ */
+```
+
+4. 使用命令生成文档
+```bash
+npm run build:docs
+```
+
+5. 启动项目，访问文档
+```bash
+http://localhost:7001/public/docs/index.html
+```

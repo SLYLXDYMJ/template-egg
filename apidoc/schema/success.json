@@ -1,0 +1,25 @@
+{
+  "title": "统一的成功响应",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "integer",
+      "description": "状态码",
+      "default": 200
+    },
+    "data": {
+      "type": "Any",
+      "description": "响应数据"
+    },
+    "msg": {
+      "type": "string",
+      "description": "成功消息",
+      "default": "√"
+    }
+  },
+  "required": [
+    "status",
+    "data",
+    "msg"
+  ]
+}

@@ -1,7 +1,7 @@
 /**
  *  统一的成功的响应消息
  **/
-exports.success = function (data, msg = '请求成功') {
+exports.success = function (data, msg = '√') {
   let { ctx } = this
   
   ctx.body = {
