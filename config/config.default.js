@@ -1,6 +1,5 @@
 const dbConfig = require('../database/config')
 
-
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */

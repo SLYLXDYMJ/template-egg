@@ -8,6 +8,13 @@ npm i
 npm run dev
 ```
 
+## 功能大纲
+- [x] 统一的成功/失败响应 json 格式
+- [x] jwt 鉴权
+- [x] 前后端分离文档
+- [x] ORM 库集成（sequelize）
+- [x] ORM 模型对应的 service 模板（sequelize）
+
 ## 统一的成功响应
 > 对应的 json schema：<br/>
 > apidoc/schema/success.json
