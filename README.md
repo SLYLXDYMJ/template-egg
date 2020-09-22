@@ -1,6 +1,13 @@
 # template-egg
 > egg 常用代码模板
 
+## run
+```bash
+npm i
+=> 修改 database/migrations 数据库配置
+npm run dev
+```
+
 ## 统一的成功响应
 > 对应的 json schema：<br/>
 > apidoc/schema/success.json
