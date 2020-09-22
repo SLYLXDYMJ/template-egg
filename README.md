@@ -286,7 +286,9 @@ module.exports = app => {
 ```
 
 8. 同步表模型
-> app.js
+> app.js <br/>
+> 在开发环境中使用 sync({ alter: true }) 同步 <br/>
+> 在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
 ```javascript
 module.exports = class {
   constructor (app) {
