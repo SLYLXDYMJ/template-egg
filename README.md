@@ -1,7 +1,7 @@
 # template-egg
 > egg 常用代码模板
 
-## run
+## 运行本项目
 ```bash
 npm i
 => 修改 database/migrations 数据库配置
