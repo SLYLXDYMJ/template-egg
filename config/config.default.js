@@ -1,6 +1,5 @@
-/* eslint valid-jsdoc: "off" */
+const dbConfig = require('../database/config')
 
-'use strict'
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -20,18 +19,23 @@ module.exports = appInfo => {
     'error'
   ]
   
+  // 关闭 csrf
+  config.security = {
+    csrf: {
+      enable: false
+    }
+  }
+  
+  
+  
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
-    
+    sequelize: {
+      ...dbConfig[ process.env.NODE_ENV ]
+    },
     jwt: {
       secret: '加密钥匙'
-    },
-  
-    security: {
-      csrf: {
-        enable: false
-      }
     }
   }
   

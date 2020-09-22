@@ -11,8 +11,6 @@ module.exports = app => {
     app
   )
   
-  router.get('/', controller.home.index)
-  
   router.post('/login', controller.user.login)
   router.get('/user/info', jwtAuth, controller.user.getUserInfo)
 }

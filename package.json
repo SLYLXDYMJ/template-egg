@@ -10,7 +10,9 @@
     "egg": "^2.15.1",
     "egg-passport": "^2.1.1",
     "egg-scripts": "^2.11.0",
+    "egg-sequelize": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
@@ -22,7 +24,8 @@
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
     "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0"
+    "eslint-config-egg": "^7.1.0",
+    "sequelize-cli": "^6.2.0"
   },
   "engines": {
     "node": ">=10.0.0"

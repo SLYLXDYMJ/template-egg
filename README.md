@@ -137,7 +137,7 @@ module.exports = app => {
 }
 ```
 
-## apidoc
+## apidoc 文档
 1. 安装依赖
 ```bash
 npm install -save-dev apidoc apidoc-plugin-schema
@@ -180,4 +180,119 @@ npm run build:docs
 5. 启动项目，访问文档
 ```bash
 http://localhost:7001/public/docs/index.html
+```
+
+## 使用 sequelize 操作数据库
+1. 安装依赖
+```bash
+npm install --save egg-sequelize mysql2
+npm install --save-dev sequelize-cli
+```
+
+2. 注册插件
+> config/plugin.js
+```javascript
+exports.sequelize = {
+  enable: true,
+  package: 'egg-sequelize'
+}
+```
+
+3. 创建 Migrations 配置文件
+> app/.sequelizerc
+```javascript
+'use strict';
+
+const path = require('path');
+
+module.exports = {
+  config: path.join(__dirname, 'database/config.json'),
+  'migrations-path': path.join(__dirname, 'database/migrations'),
+  'seeders-path': path.join(__dirname, 'database/seeders'),
+  'models-path': path.join(__dirname, 'app/model'),
+};
+```
+
+4. 初始化 Migrations 配置文件和目录
+> 执行完会生成 database 目录
+```bash
+npx sequelize init:config
+npx sequelize init:migrations
+```
+
+5. 配置各个环境的数据库信息
+> database/config.json
+```json
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "egg-sequelize-doc-default",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "egg-sequelize-doc-unittest",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
+```
+
+6. 在 egg 配置中引入 database/config.json 配置
+> config/config.default.js
+```javascript
+const dbConfig = require('../database/config')
+
+module.exports = appInfo => {
+  const userConfig = {
+    /* ... */
+    sequelize: {
+      ...dbConfig[ process.env.NODE_ENV ]
+    }
+    /* ... */
+  }
+}
+```
+
+7. 创建表模型
+```javascript
+// 在 app/model 目录下创建模型 js 文件
+module.exports = app => {
+  const { INTEGER, STRING, DATE } = app.Sequelize
+  
+  const User = app.model.define('users', {
+    id: {
+      type: INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: STRING,
+    createdAt: DATE,
+    updatedAt: DATE
+  })
+  
+  return User
+}
+```
+
+8. 同步表模型
+> app.js
+```javascript
+module.exports = class {
+  constructor (app) {
+    this.app = app
+  }
+  async willReady () {
+    /**
+     *  在开发环境中使用 sync({ alter: true }) 同步
+     *  在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
+     **/
+    await this.app.model.sync({
+      alter: process.env.NODE_ENV === 'development'
+    })
+  }
+}
 ```
