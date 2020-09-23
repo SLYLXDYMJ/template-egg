@@ -191,28 +191,7 @@ module.exports = appInfo => {
 }
 ```
 
-7. 创建表模型
-```javascript
-// 在 app/model 目录下创建模型 js 文件
-module.exports = app => {
-  const { INTEGER, STRING, DATE } = app.Sequelize
-  
-  const User = app.model.define('users', {
-    id: {
-      type: INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: STRING,
-    createdAt: DATE,
-    updatedAt: DATE
-  })
-  
-  return User
-}
-```
-
-8. 同步表模型
+7. 同步表模型
 > app.js <br/>
 > 在开发环境中使用 sync({ alter: true }) 同步 <br/>
 > 在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
