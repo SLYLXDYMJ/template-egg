@@ -12,8 +12,9 @@ npm run dev
 - [x] 统一的成功/失败响应 json 格式
 - [x] 前后端分离文档
 - [x] 集成 ORM 库（sequelize）
-- [ ] 根据 ORM 库，实现通用 model 模板
-- [ ] 根据 ORM 库，实现通用 “增删改查” service 模板
+- [x] 根据 ORM 库，实现通用 model 模板
+- [x] 根据 ORM 库，实现通用的模型 "增删改查" service 模板
+- [x] 根据 "增删改查" service 模板，实现模型对应的 "增删改查" 控制器
 - [ ] 根据 ORM 库，实现用户基础模型、通用功能接口、鉴权中间件
   - [ ] 注册
   - [ ] 登录
@@ -115,7 +116,7 @@ npm run build:docs
 http://localhost:7001/public/docs/index.html
 ```
 
-## 使用 sequelize 操作数据库
+## 集成 ORM 库（sequelize）
 1. 安装依赖
 ```bash
 npm install --save egg-sequelize mysql2
@@ -231,6 +232,9 @@ module.exports = class {
   }
 }
 ```
+
+## 根据 ORM 库，实现通用 model 模板
+> app/model/A.js
 
 ## jwt鉴权（passport-jwt）
 > 对应的 json schema（header）：<br/>

@@ -1,17 +1,42 @@
 const { Service } = require('egg')
 
-const modelName = ''
+const MODEL_NAME = ''
 
-module.exports = class extends Service {
-  async findAll () {}
+module.exports = MODEL_NAME ? class extends Service {
+  async findAll (where) {
+    return await this.ctx.model[ MODEL_NAME ].findAll({
+      where
+    })
+  }
   
-  async findOne () {}
+  async findOne (where) {
+    return await this.ctx.model[ MODEL_NAME ].findOne({
+      where
+    })
+  }
   
-  async count () {}
+  async count (where) {
+    return await this.ctx.model[ MODEL_NAME ].count({
+      where
+    })
+  }
   
-  async create () {}
+  async create (data) {
+    return await this.ctx.model[ MODEL_NAME ].create({
+      ...data
+    })
+  }
   
-  async update () {}
+  async update (where, data) {
+    return await this.ctx.model[ MODEL_NAME ].update(
+      data,
+      where
+    )
+  }
   
-  async delete () {}
-}
+  async delete (where) {
+    return await this.ctx.model[ MODEL_NAME ].destroy(
+      where
+    )
+  }
+} : null
