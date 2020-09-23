@@ -1,12 +1,22 @@
 const { Service } = require('egg')
 
+const _ = require('lodash')
+
 const MODEL_NAME = ''
 
 module.exports = MODEL_NAME ? class extends Service {
-  async findAll (where) {
-    return await this.ctx.model[ MODEL_NAME ].findAll({
-      where
-    })
+  async findAll ({ where, offset, limit, order }) {
+    offset = offset && Number(offset)
+    limit = limit && Number(limit)
+    
+    return {
+      total: await this.ctx.model[ MODEL_NAME ].count({
+        where
+      }),
+      data: await this.ctx.model[ MODEL_NAME ].findAll({
+        where, offset, limit, order
+      })
+    }
   }
   
   async findOne (where) {

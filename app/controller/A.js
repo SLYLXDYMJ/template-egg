@@ -1,5 +1,7 @@
 const { Controller } = require('egg')
 
+const _ = require('lodash')
+
 const MODULE_NAME = ''
 const SERVICE_NAME = MODULE_NAME.toLowerCase()
 
@@ -7,11 +9,23 @@ module.exports = MODULE_NAME ? class extends Controller {
   async findAll () {
     let { ctx } = this
     let { query } = ctx
+    let { offset, limit, order } = query
+    let where = null
+    
+    offset = offset && Number(offset)
+    limit = limit && Number(limit)
+    where = _.omitBy(query, (val, key) => {
+      return _.includes([ 'offset', 'limit', 'order' ], key)
+    })
+    order = order && _.chain(order)
+      .split(',')
+      .map(item => item.split(':'))
+      .value()
     
     return ctx.helper.success(
-      await ctx.service[ SERVICE_NAME ].findAll(
-        query
-      )
+      await ctx.service[ SERVICE_NAME ].findAll(_.omitBy({
+        where, offset, limit, order
+      }, _.isNil))
     )
   }
   
