@@ -1,3 +1,6 @@
+/** 表名称 **/
+const TABLE_NAME = ''
+
 /** 模型名称 **/
 const MODEL_NAME = ''
 
@@ -6,7 +9,7 @@ module.exports = app => {
   
   const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
-  const Model = app.model.define(MODEL_NAME, {
+  const Model = app.model.define(TABLE_NAME, {
     /**
      *  字段配置参数字典
      *    type             - 指定类型
@@ -61,7 +64,7 @@ module.exports = app => {
      *  onDelete 可选：CASCADE SET NULL
      *  onUpdate 可选：CASCADE
      **/
-    app.model[ MODEL_NAME ].hasOne(null, {})
+    // app.model[ MODEL_NAME ].hasOne(null, {})
     
     /**
      *  多对一关系
@@ -69,7 +72,7 @@ module.exports = app => {
      *  onDelete 可选：SET NULL NO ACTION
      *  onUpdate 可选：CASCADE
      **/
-    app.model[ MODEL_NAME ].belongsTo(null, {})
+    // app.model[ MODEL_NAME ].belongsTo(null, {})
     
     /**
      *  一对多关系
@@ -77,7 +80,7 @@ module.exports = app => {
      *  onDelete 可选：SET NULL NO ACTION
      *  onUpdate 可选：CASCADE
      **/
-    app.model[ MODEL_NAME ].hasMany(null, {})
+    // app.model[ MODEL_NAME ].hasMany(null, {})
     
     /**
      *  多对对关系
@@ -85,7 +88,7 @@ module.exports = app => {
      *  onDelete 可选：SET NULL NO ACTION
      *  onUpdate 可选：CASCADE
      **/
-    app.model[ MODEL_NAME ].belongsToMany(null, {})
+    // app.model[ MODEL_NAME ].belongsToMany(null, {})
   }
   
   return Model

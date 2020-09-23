@@ -22,21 +22,21 @@ module.exports = MODEL_NAME ? class extends Service {
   }
   
   async create (data) {
-    return await this.ctx.model[ MODEL_NAME ].create({
-      ...data
-    })
+    return await this.ctx.model[ MODEL_NAME ].create(
+      data
+    )
   }
   
   async update (where, data) {
     return await this.ctx.model[ MODEL_NAME ].update(
       data,
-      where
+      { where }
     )
   }
   
   async delete (where) {
-    return await this.ctx.model[ MODEL_NAME ].destroy(
+    return await this.ctx.model[ MODEL_NAME ].destroy({
       where
-    )
+    })
   }
 } : null

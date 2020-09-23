@@ -1,14 +1,15 @@
 const { Controller } = require('egg')
 
-const MODEL_NAME = ''
+const MODULE_NAME = ''
+const SERVICE_NAME = MODULE_NAME.toLowerCase()
 
-module.exports = MODEL_NAME ? class extends Controller {
+module.exports = MODULE_NAME ? class extends Controller {
   async findAll () {
     let { ctx } = this
     let { query } = ctx
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].findAll(
+      await ctx.service[ SERVICE_NAME ].findAll(
         query
       )
     )
@@ -19,7 +20,7 @@ module.exports = MODEL_NAME ? class extends Controller {
     let { id } = ctx.params
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].findOne({
+      await ctx.service[ SERVICE_NAME ].findOne({
         id
       })
     )
@@ -30,7 +31,7 @@ module.exports = MODEL_NAME ? class extends Controller {
     let { query } = ctx
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].count(
+      await ctx.service[ SERVICE_NAME ].count(
         query
       )
     )
@@ -38,10 +39,10 @@ module.exports = MODEL_NAME ? class extends Controller {
   
   async create () {
     let { ctx } = this
-    let { body } = ctx
+    let { body } = ctx.request
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].create(
+      await ctx.service[ SERVICE_NAME ].create(
         body
       )
     )
@@ -49,11 +50,12 @@ module.exports = MODEL_NAME ? class extends Controller {
   
   async update () {
     let { ctx } = this
-    let { body, params } = ctx
+    let { params, request } = ctx
+    let { body } = request
     let { id } = params
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].update(
+      await ctx.service[ SERVICE_NAME ].update(
         { id },
         body
       )
@@ -65,7 +67,7 @@ module.exports = MODEL_NAME ? class extends Controller {
     let { id } = ctx.params
     
     return ctx.helper.success(
-      await ctx.service[ MODEL_NAME ].delete({
+      await ctx.service[ SERVICE_NAME ].delete({
         id
       })
     )
