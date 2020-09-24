@@ -221,8 +221,8 @@ module.exports = class {
 
 1. 想一个模型名字（比如 Product）
 2. 复制 model，service，controller 模板，在对应目录下创建 product.js
-3. 在文件中找 MODEL_NAME 常量写 Product
-4. 在 model/product.js 中还要写表名 products（复数小写形式）
+3. 在文件中找 MODEL_NAME 常量填 Product
+4. 在 model/product.js 中还要填 TABLE_NAME = products（复数小写形式）
 5. 定义 restful 路由，如下：
 
 ```javascript
