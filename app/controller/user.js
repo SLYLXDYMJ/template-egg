@@ -1,16 +1,124 @@
 const { Controller } = require('egg')
 
 const _ = require('lodash')
+const jwt = require('jsonwebtoken')
 
 const MODULE_NAME = 'User'
 const SERVICE_NAME = MODULE_NAME.toLowerCase()
 
 module.exports = MODULE_NAME ? class extends Controller {
-  async login () {}
+  /**
+   *  @api { Post } /login 登录
+   *  @apiGroup 用户
+   *
+   *  @apiParam (请求体) { String } username 用户名
+   *  @apiParam (请求体) { String } password 密码
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async login () {
+    let { ctx, app } = this
+    
+    return ctx.helper.success({
+      token: jwt.sign(
+        {
+          id: ctx.user.id
+        },
+        app.config.jwt.secret,
+        {
+          expiresIn: '15d'
+        }
+      ),
+      user: ctx.user
+    })
+  }
   
-  async register () {}
+  /**
+   *  @api { Post } /register 注册
+   *  @apiGroup 用户
+   *
+   *  @apiParam (请求体) { String } username 用户名
+   *  @apiParam (请求体) { String } password 密码
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async register () {
+    let { ctx } = this
+    let { username, password } = ctx.request.body
+    
+    if (!username || !password) {
+      return ctx.throw(400, '用户名或密码不能为空')
+    }
+    else if (await ctx.service.user.findOne({ username })) {
+      return ctx.throw(400, '用户名已存在')
+    }
+    
+    try {
+      await ctx.service.user.create({
+        username,
+        password
+      })
+      return ctx.helper.success('注册成功')
+    }
+    catch (err) {
+      return ctx.throw(err)
+    }
+  }
   
-  async getInfo () {}
+  /**
+   *  @api { Get } /me 获取用户信息
+   *  @apiGroup 用户
+   *
+   *  @apiSchema (请求头) {jsonschema=../../apidoc/schema/jwt-auth.json} apiHeader
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async getInfo () {
+    let { ctx, app } = this
+    
+    return ctx.helper.success(
+      ctx.user
+    )
+  }
+  
+  /**
+   *  @api { Put } /password 修改密码
+   *  @apiGroup 用户
+   *
+   *  @apiSchema (请求头) {jsonschema=../../apidoc/schema/jwt-auth.json} apiHeader
+   *
+   *  @apiParam (请求体) { String } originPassword 原始密码
+   *  @apiParam (请求体) { String } newPassword    新密码
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async changePassword () {
+    let { ctx } = this
+    let { user } = ctx
+    let { originPassword, newPassword } = ctx.request.body
+    
+    if (!originPassword || !newPassword) {
+      return ctx.throw(400, '原始密码和新密码不能为空')
+    }
+    else if (user.password !== originPassword) {
+      return ctx.throw(400, '原始密码错误')
+    }
+    
+    await ctx.service.user.update(
+      { id: user.id },
+      { password: newPassword }
+    )
+    
+    return ctx.helper.success()
+  }
   
   /**
    *  @apiIgnore

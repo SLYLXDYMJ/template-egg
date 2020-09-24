@@ -1,4 +1,5 @@
-const jwtAuth = require('./app/middleware/jwt-auth')
+const passportLocal = require('./app/middleware/passport-local')
+const passportJwt = require('./app/middleware/passport-jwt')
 
 class AppBootHook {
   constructor (app) {
@@ -20,7 +21,19 @@ class AppBootHook {
     // 所有的插件都已启动完毕，但是应用整体还未 ready
     // 可以做一些数据初始化等操作，这些操作成功才会启动应用
     
-    jwtAuth.init(this.app)
+    passportLocal.init(this.app)
+    passportJwt.init(this.app)
+    
+    this.app.passport.verify(async (ctx, payload) => {
+      switch (payload.provider) {
+        case 'local': {
+          return passportLocal.verify(ctx, payload)
+        }
+        case 'jwt': {
+          return passportJwt.verify(ctx, payload)
+        }
+      }
+    })
     
     /**
      *  在开发环境中使用 sync({ alter: true }) 同步

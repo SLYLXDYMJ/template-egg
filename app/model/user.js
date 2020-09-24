@@ -26,6 +26,15 @@ module.exports = app => {
       autoIncrement: true,
       allowNull: false
     },
+    username: {
+      type: STRING,
+      unique: true,
+      allowNull: false
+    },
+    password: {
+      type: STRING,
+      allowNull: false
+    },
     createdAt: {
       type: DATE,
       allowNull: false

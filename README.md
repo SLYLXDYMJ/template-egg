@@ -16,12 +16,12 @@ npm run dev
 - [x] 根据 ORM 库，实现通用的模型 "增删改查" service 模板
 - [x] 根据 "增删改查" service 模板，实现模型对应的 "增删改查" 控制器
 - [ ] 给控制器增加更复杂的查询功能（findAll、count）
-- [ ] 实现用户基础模型、通用功能接口、鉴权中间件
-  - [ ] 注册
-  - [ ] 登录
-  - [ ] 修改密码
-  - [ ] 忘记密码
-  - [ ] jwt 鉴权中间件
+- [x] 实现用户基础模型、通用功能接口、鉴权中间件
+  - [x] 注册
+  - [x] 登录
+  - [x] 获取个人信息
+  - [x] 修改密码
+  - [x] jwt 鉴权中间件
 
 ## 统一的成功响应
 > 对应的 json schema：<br/>
@@ -237,44 +237,22 @@ router.delete('/product/:id', controller.product.delete)
 备注：
 - 在 app/controller/A.js 中已有统一 apidoc 文档注释，需要自行完善后，删除每一块顶部的 @apiIgnore 后启用
 
-
-## jwt鉴权（passport-jwt）
-> 对应的 json schema（header）：<br/>
-> apidoc/schema/jwt-auth.json
-
+## 用户相关基础功能
 1. 安装依赖
 ```bash
-npm i --save egg-passport passport-jwt jsonwebtoken
+npm i --save jsonwebtoken passport-jwt passport-local egg-passport
 ```
 
-2. 核心代码，复制到自己项目相同位置，并修改 app.passport.verify 逻辑
-```javascript
-// app/middleware/jwt-auth.js
-jwtAuth.init = function (app) {
-  /** ... **/
-  
-  app.passport.verify(async (ctx, jwtPayload) => {
-    // 这里应该根据 jwtPayload 的用户数据查询数据库
-    // 并返回用户数据 或 null
-    return { id: 10086, name: '静态数据' }
-  })
-}
+2. 复制以下代码到自己项目中
+```bash
+app/module/user.js
+app/service/user.js
+app/controller/user.js
+app/middleware/passport-local.js
+app/middleware/passport-jwt.js
 ```
 
-3. 在 app.js 中初始化 passport-jwt
-```javascript
-const jwtAuth = require('./app/middleware/jwt-auth')
-
-class AppBootHook {
-  async willReady () {
-    // 所有的插件都已启动完毕，但是应用整体还未 ready
-    // 可以做一些数据初始化等操作，这些操作成功才会启动应用
-    jwtAuth.init(this.app)
-  }
-}
-```
-
-4. 开启插件
+3. 开启 egg-passport 插件
 ```javascript
 // config/plugin.js
 exports.passport = {
@@ -283,7 +261,7 @@ exports.passport = {
 }
 ```
 
-5. 定义 jwt secret
+4. 添加 jwt sercet 配置
 ```javascript
 // config/config.default.js
 const userConfig = {
@@ -293,35 +271,60 @@ const userConfig = {
 }
 ```
 
-6. 在登录接口控制器使用 jsonwebtoken 生成 token
+5. 初始化中间件
 ```javascript
-// 登录控制器
-const jsonWebToken = require('jsonwebtoken')
-
-class UserController extends Controller {
-  async login () {
-    const { ctx, app } = this
+// app.js
+class AppBootHook {
+  async willReady () {
+    // 所有的插件都已启动完毕，但是应用整体还未 ready
+    // 可以做一些数据初始化等操作，这些操作成功才会启动应用
     
-    ctx.body = {
-      token: jsonWebToken.sign({
-        /** ... **/
-      }, app.config.jwt.secret)
-    }
+    passportLocal.init(this.app)
+    passportJwt.init(this.app)
+    
+    this.app.passport.verify(async (ctx, payload) => {
+      switch (payload.provider) {
+        case 'local': {
+          return passportLocal.verify(ctx, payload)
+        }
+        case 'jwt': {
+          return passportJwt.verify(ctx, payload)
+        }
+      }
+    })
+    
+    /**
+     *  在开发环境中使用 sync({ alter: true }) 同步
+     *  在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
+     **/
+    await this.app.model.sync({
+      alter: process.env.NODE_ENV === 'development'
+    })
   }
 }
-```
+````
 
-7. 在路由中使用鉴权中间件
+6. 定义路由
+> 下面 jwtAuth 为 jwt 鉴权中间件，可以在其他自定义接口中使用
 ```javascript
 // app/router.js
 module.exports = app => {
   const { router, controller } = app
-  const jwtAuth = app.middleware.jwtAuth(
+  const localAuth = app.middleware.passportLocal(
     app.config,
     app
   )
- 
-  router.get('/** ... **/', jwtAuth, /** ... **/)
+  const jwtAuth = app.middleware.passportJwt(
+    app.config,
+    app
+  )
+  
+  router.post('/login', localAuth, controller.user.login)
+  router.post('/register', controller.user.register)
+  router.get('/me', jwtAuth, controller.user.getInfo)
+  router.put('/password', jwtAuth, controller.user.changePassword)
 }
 ```
 
+备注：
+- 用户相关的接口 apidoc 注释文档以写好
