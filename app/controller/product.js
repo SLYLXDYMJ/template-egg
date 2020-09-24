@@ -6,6 +6,19 @@ const MODULE_NAME = 'Product'
 const SERVICE_NAME = MODULE_NAME.toLowerCase()
 
 module.exports = MODULE_NAME ? class extends Controller {
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name] 获取数据列表
+   *  @apiGroup model
+   *
+   *  @apiParam (查询字符串) { Number } [offset] 用于分页查询，跳过 offset 条结果
+   *  @apiParam (查询字符串) { Number } [limit]  用于分页查询，限制返回的条目数
+   *  @apiParam (查询字符串) { String } [order]  排序，格式：createdAt:DESC,id:ASC
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async findAll () {
     let { ctx } = this
     let { query } = ctx
@@ -26,6 +39,15 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
   
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name]/:id 根据 id 查询单条数据
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async findOne () {
     let { ctx } = this
     let { id } = ctx.params
@@ -37,6 +59,16 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
   
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name]/count 获取数量
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *  @apiSuccess (成功响应_) { Number } data 数量
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async count () {
     let { ctx } = this
     
@@ -45,6 +77,15 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
   
+  /**
+   *  @apiIgnore
+   *  @api { POST } /[model-name] 创建条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async create () {
     let { ctx } = this
     let { body } = ctx.request
@@ -56,6 +97,15 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
   
+  /**
+   *  @apiIgnore
+   *  @api { PUT } /[model-name]/:id 更新条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async update () {
     let { ctx } = this
     let { params, request } = ctx
@@ -70,6 +120,15 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
   
+  /**
+   *  @apiIgnore
+   *  @api { DELETE } /[model-name]/:id 删除条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
   async delete () {
     let { ctx } = this
     let { id } = ctx.params

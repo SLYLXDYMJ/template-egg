@@ -235,7 +235,7 @@ router.delete('/product/:id', controller.product.delete)
 ```
 
 备注：
-在 app/controller/A.js 中已有统一 apidoc 文档注释
+- 在 app/controller/A.js 中已有统一 apidoc 文档注释，需要自行完善后，删除每一块顶部的 @apiIgnore 后启用
 
 
 ## jwt鉴权（passport-jwt）

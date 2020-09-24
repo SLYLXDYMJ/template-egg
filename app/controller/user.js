@@ -1,26 +1,148 @@
-const Controller = require('egg').Controller
-const jsonWebToken = require('jsonwebtoken')
+const { Controller } = require('egg')
 
-class UserController extends Controller {
-  async login () {
-    const { ctx, app } = this
+const _ = require('lodash')
+
+const MODULE_NAME = 'User'
+const SERVICE_NAME = MODULE_NAME.toLowerCase()
+
+module.exports = MODULE_NAME ? class extends Controller {
+  async login () {}
+  
+  async register () {}
+  
+  async getInfo () {}
+  
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name] 获取数据列表
+   *  @apiGroup model
+   *
+   *  @apiParam (查询字符串) { Number } [offset] 用于分页查询，跳过 offset 条结果
+   *  @apiParam (查询字符串) { Number } [limit]  用于分页查询，限制返回的条目数
+   *  @apiParam (查询字符串) { String } [order]  排序，格式：createdAt:DESC,id:ASC
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async findAll () {
+    let { ctx } = this
+    let { query } = ctx
+    let { offset, limit, order } = query
+    let where = null
     
-    let user = await ctx.model.User.create({
-      name: new Date().getTime()
-    })
+    offset = offset && Number(offset)
+    limit = limit && Number(limit)
+    order = order && _.chain(order)
+      .split(',')
+      .map(item => item.split(':'))
+      .value()
     
-    ctx.body = {
-      token: jsonWebToken.sign({
-        id: user.id
-      }, app.config.jwt.secret)
-    }
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].findAll(_.omitBy({
+        offset, limit, order
+      }, _.isNil))
+    )
   }
   
-  async getUserInfo () {
-    const { ctx, app } = this
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name]/:id 根据 id 查询单条数据
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async findOne () {
+    let { ctx } = this
+    let { id } = ctx.params
     
-    ctx.body = ctx.user
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].findOne({
+        id
+      })
+    )
   }
-}
-
-module.exports = UserController
+  
+  /**
+   *  @apiIgnore
+   *  @api { GET } /[model-name]/count 获取数量
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *  @apiSuccess (成功响应_) { Number } data 数量
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async count () {
+    let { ctx } = this
+    
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].count()
+    )
+  }
+  
+  /**
+   *  @apiIgnore
+   *  @api { POST } /[model-name] 创建条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async create () {
+    let { ctx } = this
+    let { body } = ctx.request
+    
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].create(
+        body
+      )
+    )
+  }
+  
+  /**
+   *  @apiIgnore
+   *  @api { PUT } /[model-name]/:id 更新条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async update () {
+    let { ctx } = this
+    let { params, request } = ctx
+    let { body } = request
+    let { id } = params
+    
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].update(
+        { id },
+        body
+      )
+    )
+  }
+  
+  /**
+   *  @apiIgnore
+   *  @api { DELETE } /[model-name]/:id 删除条目
+   *  @apiGroup model
+   *
+   *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
+   *
+   *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
+   **/
+  async delete () {
+    let { ctx } = this
+    let { id } = ctx.params
+    
+    return ctx.helper.success(
+      await ctx.service[ SERVICE_NAME ].delete({
+        id
+      })
+    )
+  }
+} : null
