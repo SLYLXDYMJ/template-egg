@@ -292,14 +292,6 @@ class AppBootHook {
         }
       }
     })
-    
-    /**
-     *  在开发环境中使用 sync({ alter: true }) 同步
-     *  在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
-     **/
-    await this.app.model.sync({
-      alter: process.env.NODE_ENV === 'development'
-    })
   }
 }
 ````
