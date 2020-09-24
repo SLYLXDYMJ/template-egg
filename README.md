@@ -212,8 +212,30 @@ module.exports = class {
 }
 ```
 
-## 根据 ORM 库，实现通用 model 模板
-> app/model/A.js
+## 根据 ORM 库，实现通用 model、service、controller 模板
+> 模板文件：<br/>
+> app/model/A.js <br/>
+> app/service/A.js <br/>
+> app/controller/A.js <br/>
+
+1. 想一个模型名字（比如 Product）
+2. 复制 model，service，controller 模板，在对应目录下创建 product.js
+3. 在文件中找 MODEL_NAME 常量写 Product
+4. 在 model/product.js 中还要写表名 products（复数小写形式）
+5. 定义 restful 路由，如下：
+
+```javascript
+router.get('/product', controller.product.findAll)
+router.get('/product/count', controller.product.count)
+router.get('/product/:id', controller.product.findOne)
+router.post('/product', controller.product.create)
+router.put('/product/:id', controller.product.update)
+router.delete('/product/:id', controller.product.delete)
+```
+
+备注：
+在 app/controller/A.js 中已有统一 apidoc 文档注释
+
 
 ## jwt鉴权（passport-jwt）
 > 对应的 json schema（header）：<br/>

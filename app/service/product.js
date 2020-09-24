@@ -2,7 +2,7 @@ const { Service } = require('egg')
 
 const _ = require('lodash')
 
-const MODEL_NAME = ''
+const MODEL_NAME = 'Product'
 
 module.exports = MODEL_NAME ? class extends Service {
   async findAll ({ offset, limit, order }) {
