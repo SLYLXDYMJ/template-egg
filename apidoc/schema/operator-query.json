@@ -1,0 +1,46 @@
+{
+  "title": "操作符查询参数",
+  "type": "object",
+  "properties": {
+    "eq": {
+      "type": "String",
+      "description": "全等（?eq=id:8,name:jason）"
+    },
+    "ne": {
+      "type": "String",
+      "description": "不全等（?ne=id:8,name:jason）"
+    },
+    "in": {
+      "type": "String",
+      "description": "包含（?in=id:8,id:9,type:web,type:php）"
+    },
+    "notIn": {
+      "type": "String",
+      "description": "不包含（?notIn=id:8,id:9,type:web,type:php）"
+    },
+    "lt": {
+      "type": "String",
+      "description": "小于（?gt=price:1000&lt=price:9999）"
+    },
+    "gt": {
+      "type": "String",
+      "description": "大于（?gt=price:1000&lt=price:9999）"
+    },
+    "lte": {
+      "type": "String",
+      "description": "小于等于（?gt=price:1000&lt=price:9999）"
+    },
+    "gte": {
+      "type": "String",
+      "description": "大于等于（?gt=price:1000&lt=price:9999）"
+    },
+    "like": {
+      "type": "String",
+      "description": "模糊查询（?like=name:ja,body:ppa）"
+    },
+    "notLike": {
+      "type": "String",
+      "description": "模糊查询，不包含（?notLike=name:ja,body:ppa）"
+    }
+  }
+}

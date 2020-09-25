@@ -1,18 +1,19 @@
 const { Service } = require('egg')
-
-const _ = require('lodash')
+const { Op } = require('sequelize')
 
 const MODEL_NAME = ''
 
 module.exports = MODEL_NAME ? class extends Service {
-  async findAll ({ offset, limit, order }) {
+  async findAll ({ where, offset, limit, order }) {
     offset = offset && Number(offset)
     limit = limit && Number(limit)
     
     return {
-      total: await this.ctx.model[ MODEL_NAME ].count(),
+      total: await this.ctx.model[ MODEL_NAME ].count({
+        where
+      }),
       data: await this.ctx.model[ MODEL_NAME ].findAll({
-        offset, limit, order
+        where, offset, limit, order
       })
     }
   }
@@ -23,8 +24,10 @@ module.exports = MODEL_NAME ? class extends Service {
     })
   }
   
-  async count () {
-    return await this.ctx.model[ MODEL_NAME ].count()
+  async count (where) {
+    return await this.ctx.model[ MODEL_NAME ].count({
+      where
+    })
   }
   
   async create (data) {

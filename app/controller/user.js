@@ -125,6 +125,8 @@ module.exports = MODULE_NAME ? class extends Controller {
    *  @api { GET } /[model-name] 获取数据列表
    *  @apiGroup model
    *
+   *  @apiSchema (查询字符串_) {jsonschema=../../apidoc/schema/operator-query.json} apiParam
+   *
    *  @apiParam (查询字符串) { Number } [offset] 用于分页查询，跳过 offset 条结果
    *  @apiParam (查询字符串) { Number } [limit]  用于分页查询，限制返回的条目数
    *  @apiParam (查询字符串) { String } [order]  排序，格式：createdAt:DESC,id:ASC
@@ -177,6 +179,8 @@ module.exports = MODULE_NAME ? class extends Controller {
    *  @apiIgnore
    *  @api { GET } /[model-name]/count 获取数量
    *  @apiGroup model
+   *
+   *  @apiSchema (查询字符串) {jsonschema=../../apidoc/schema/operator-query.json} apiParam
    *
    *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
    *  @apiSuccess (成功响应_) { Number } data 数量

@@ -26,6 +26,10 @@ module.exports = app => {
       autoIncrement: true,
       allowNull: false
     },
+    name: {
+      type: STRING,
+      allowNull: false
+    },
     createdAt: {
       type: DATE,
       allowNull: false

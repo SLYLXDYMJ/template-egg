@@ -11,6 +11,8 @@ module.exports = MODULE_NAME ? class extends Controller {
    *  @api { GET } /[model-name] 获取数据列表
    *  @apiGroup model
    *
+   *  @apiSchema (查询字符串_) {jsonschema=../../apidoc/schema/operator-query.json} apiParam
+   *
    *  @apiParam (查询字符串) { Number } [offset] 用于分页查询，跳过 offset 条结果
    *  @apiParam (查询字符串) { Number } [limit]  用于分页查询，限制返回的条目数
    *  @apiParam (查询字符串) { String } [order]  排序，格式：createdAt:DESC,id:ASC
@@ -25,6 +27,7 @@ module.exports = MODULE_NAME ? class extends Controller {
     let { offset, limit, order } = query
     let where = null
     
+    where = ctx.helper.formatOperatorQuery(query)
     offset = offset && Number(offset)
     limit = limit && Number(limit)
     order = order && _.chain(order)
@@ -34,7 +37,7 @@ module.exports = MODULE_NAME ? class extends Controller {
     
     return ctx.helper.success(
       await ctx.service[ SERVICE_NAME ].findAll(_.omitBy({
-        offset, limit, order
+        where, offset, limit, order
       }, _.isNil))
     )
   }
@@ -64,6 +67,8 @@ module.exports = MODULE_NAME ? class extends Controller {
    *  @api { GET } /[model-name]/count 获取数量
    *  @apiGroup model
    *
+   *  @apiSchema (查询字符串) {jsonschema=../../apidoc/schema/operator-query.json} apiParam
+   *
    *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
    *  @apiSuccess (成功响应_) { Number } data 数量
    *
@@ -71,9 +76,12 @@ module.exports = MODULE_NAME ? class extends Controller {
    **/
   async count () {
     let { ctx } = this
+    let { query } = ctx
     
     return ctx.helper.success(
-      await ctx.service[ SERVICE_NAME ].count()
+      await ctx.service[ SERVICE_NAME ].count(
+        ctx.helper.formatOperatorQuery(query)
+      )
     )
   }
   

@@ -15,9 +15,10 @@ npm run dev
 - [x] 根据 ORM 库，实现通用 model 模板
 - [x] 根据 ORM 库，实现通用的模型 "增删改查" service 模板
 - [x] 根据 "增删改查" service 模板，实现模型对应的 "增删改查" 控制器
-- [ ] 给 "增删改查" 控制器模板增加更复杂的查询功能（findAll、count）
-  - [ ] Number 类型字段大于小于等于查询
-  - [ ] String 类型字段关键词查询
+- [x] 给 "增删改查" 控制器模板增加更复杂的查询功能（findAll、count）
+  - [x] Number 类型字段大于小于等于查询
+  - [x] String 类型字段关键词查询
+  - [ ] Date 类型查询
 - [x] 实现用户基础模型、通用功能接口、鉴权中间件
   - [x] 注册
   - [x] 登录
@@ -220,12 +221,14 @@ module.exports = class {
 > app/model/A.js <br/>
 > app/service/A.js <br/>
 > app/controller/A.js <br/>
+> app/extend/helper.js <br/>
 
 1. 想一个模型名字（比如 Product）
-2. 复制 model，service，controller 模板，在对应目录下创建 product.js
-3. 在文件中找 MODEL_NAME 常量填 Product
-4. 在 model/product.js 中还要填 TABLE_NAME = products（复数小写形式）
-5. 定义 restful 路由，如下：
+2. 复制 helper.js 到自己项目中（主要用 formatOperatorQuery 方法）
+3. 复制 model，service，controller 模板，在对应目录下创建 product.js
+4. 在文件中找 MODEL_NAME 常量填 Product
+5. 在 model/product.js 中还要填 TABLE_NAME = products（复数小写形式）
+6. 定义 restful 路由，如下：
 
 ```javascript
 router.get('/product', controller.product.findAll)
@@ -276,6 +279,9 @@ const userConfig = {
 5. 初始化中间件
 ```javascript
 // app.js
+const passportLocal = require('./app/middleware/passport-local')
+const passportJwt = require('./app/middleware/passport-jwt')
+
 class AppBootHook {
   async willReady () {
     // 所有的插件都已启动完毕，但是应用整体还未 ready
