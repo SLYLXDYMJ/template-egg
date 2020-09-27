@@ -1,4 +1,5 @@
 const { Service } = require('egg')
+const { Op } = require('sequelize')
 
 const MODEL_NAME = 'Product'
 

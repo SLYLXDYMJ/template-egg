@@ -33,6 +33,9 @@ exports.formatOperatorQuery = function (query) {
       // [['id', 1], ['id', 2], ['type', 'web']]
       let [ key, value ] = itemArr.split(':')
       
+      // value 若为 number 类型则转化
+      value = Number(value) || value
+      
       // in 和 like 操作符值特殊处理
       switch (operator) {
         case 'in':

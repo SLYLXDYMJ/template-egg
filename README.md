@@ -18,7 +18,6 @@ npm run dev
 - [x] 给 "增删改查" 控制器模板增加更复杂的查询功能（findAll、count）
   - [x] Number 类型字段大于小于等于查询
   - [x] String 类型字段关键词查询
-  - [ ] Date 类型查询
 - [x] 实现用户基础模型、通用功能接口、鉴权中间件
   - [x] 注册
   - [x] 登录
@@ -159,7 +158,8 @@ npx sequelize init:migrations
 ```
 
 5. 配置各个环境的数据库信息
-> database/config.json
+> database/config.json <br/>
+> 注意：别忘了加上了时区 "timezone": "+08:00"
 ```json
 {
   "development": {
@@ -167,14 +167,16 @@ npx sequelize init:migrations
     "password": null,
     "database": "egg-sequelize-doc-default",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "+08:00"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "egg-sequelize-doc-unittest",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "+08:00"
   }
 }
 ```

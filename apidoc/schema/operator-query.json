@@ -4,11 +4,11 @@
   "properties": {
     "eq": {
       "type": "String",
-      "description": "全等（?eq=id:8,name:jason）"
+      "description": "全等（?eq=id:8,name:jason,createdAt:1601174038966）"
     },
     "ne": {
       "type": "String",
-      "description": "不全等（?ne=id:8,name:jason）"
+      "description": "不全等（?ne=id:8,name:jason,createdAt:1601174038966）"
     },
     "in": {
       "type": "String",
@@ -20,19 +20,19 @@
     },
     "lt": {
       "type": "String",
-      "description": "小于（?gt=price:1000&lt=price:9999）"
+      "description": "小于（?lt=price:9999,createdAt:1601173375000）"
     },
     "gt": {
       "type": "String",
-      "description": "大于（?gt=price:1000&lt=price:9999）"
+      "description": "大于（?gt=price:1000,createdAt:1601173375000）"
     },
     "lte": {
       "type": "String",
-      "description": "小于等于（?gt=price:1000&lt=price:9999）"
+      "description": "小于等于（?lte=price:9999,createdAt:1601173375000）"
     },
     "gte": {
       "type": "String",
-      "description": "大于等于（?gt=price:1000&lt=price:9999）"
+      "description": "大于等于（?gte=price:9999,createdAt:1601173375000）"
     },
     "like": {
       "type": "String",

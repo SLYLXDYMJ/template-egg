@@ -19,6 +19,9 @@ module.exports = MODULE_NAME ? class extends Controller {
    *
    *  @apiSchema (成功响应) {jsonschema=../../apidoc/schema/success.json} apiSuccess
    *
+   *  @apiSuccess (成功响应 data) { Number } total 匹配的条目总数量，用于分页
+   *  @apiSuccess (成功响应 data) { Array } data 条目数据
+   *
    *  @apiSchema (失败响应) {jsonschema=../../apidoc/schema/fail.json} apiSuccess
    **/
   async findAll () {
