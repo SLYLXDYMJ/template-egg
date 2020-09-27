@@ -144,7 +144,7 @@ module.exports = MODULE_NAME ? class extends Controller {
     let { offset, limit, order } = query
     let where = null
     
-    where = ctx.helper.formatOperatorQuery(query)
+    where = ctx.helper.queryToOpQuery(query)
     offset = offset && Number(offset)
     limit = limit && Number(limit)
     order = order && _.chain(order)
@@ -197,7 +197,7 @@ module.exports = MODULE_NAME ? class extends Controller {
     
     return ctx.helper.success(
       await ctx.service[ SERVICE_NAME ].count(
-        ctx.helper.formatOperatorQuery(query)
+        ctx.helper.queryToOpQuery(query)
       )
     )
   }

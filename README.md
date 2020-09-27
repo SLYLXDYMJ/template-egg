@@ -226,7 +226,7 @@ module.exports = class {
 > app/extend/helper.js <br/>
 
 1. 想一个模型名字（比如 Product）
-2. 复制 helper.js 到自己项目中（主要用 formatOperatorQuery 方法）
+2. 复制 helper.js 到自己项目中（主要用 queryToOpQuery 方法）
 3. 复制 model，service，controller 模板，在对应目录下创建 product.js
 4. 在文件中找 MODEL_NAME 常量填 Product
 5. 在 model/product.js 中还要填 TABLE_NAME = products（复数小写形式）

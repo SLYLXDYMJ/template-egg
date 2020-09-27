@@ -16,7 +16,7 @@ exports.success = function (data, msg = '√') {
 /**
  *  格式化查询对象
  **/
-exports.formatOperatorQuery = function (query) {
+exports.queryToOpQuery = function (query) {
   let result = {}
   let innerResult = {}
   let supportQuery = _.pick(query, [
