@@ -1,11 +1,11 @@
 /** 表名称 **/
-const TABLE_NAME = 'users'
+const TABLE_NAME = 'user'
 
 /** 模型名称 **/
 const MODEL_NAME = 'User'
 
 module.exports = app => {
-  if (!MODEL_NAME) return
+  if (!MODEL_NAME || !TABLE_NAME) return
   
   const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
@@ -52,6 +52,7 @@ module.exports = app => {
      *    createdAt       - 为 false 时仅关闭 createdAt 管理，为字符串时则修改自动管理的字段名称
      *    updatedAt       - 同上
      **/
+    tableName: TABLE_NAME
   })
   
   /**
