@@ -1,11 +1,11 @@
 /** 表名称 **/
-const TABLE_NAME = 'products'
+const TABLE_NAME = 'role'
 
 /** 模型名称 **/
-const MODEL_NAME = 'Product'
+const MODEL_NAME = 'Role'
 
 module.exports = app => {
-  if (!MODEL_NAME) return
+  if (!MODEL_NAME || !TABLE_NAME) return
   
   const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
@@ -28,6 +28,11 @@ module.exports = app => {
     },
     name: {
       type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    description: {
+      type: TEXT,
       allowNull: false
     },
     createdAt: {
@@ -47,6 +52,7 @@ module.exports = app => {
      *    createdAt       - 为 false 时仅关闭 createdAt 管理，为字符串时则修改自动管理的字段名称
      *    updatedAt       - 同上
      **/
+    tableName: TABLE_NAME
   })
   
   /**
@@ -69,6 +75,7 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].hasOne(null, {})
+    app.model[ MODEL_NAME ].hasOne(app.model.Permission, {})
     
     /**
      *  多对一关系
@@ -93,6 +100,9 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].belongsToMany(null, {})
+    app.model[ MODEL_NAME ].belongsToMany(app.model.User, {
+      through: 'user_role'
+    })
   }
   
   return Model

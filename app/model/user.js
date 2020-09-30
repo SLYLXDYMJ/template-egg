@@ -1,11 +1,11 @@
 /** 表名称 **/
-const TABLE_NAME = 'user'
+const TABLE_NAME = 'users'
 
 /** 模型名称 **/
 const MODEL_NAME = 'User'
 
 module.exports = app => {
-  if (!MODEL_NAME || !TABLE_NAME) return
+  if (!MODEL_NAME) return
   
   const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
@@ -52,7 +52,6 @@ module.exports = app => {
      *    createdAt       - 为 false 时仅关闭 createdAt 管理，为字符串时则修改自动管理的字段名称
      *    updatedAt       - 同上
      **/
-    tableName: TABLE_NAME
   })
   
   /**
@@ -99,6 +98,9 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].belongsToMany(null, {})
+    app.model[ MODEL_NAME ].belongsToMany(app.model.Role, {
+      through: 'user_role'
+    })
   }
   
   return Model
