@@ -1,20 +1,16 @@
 {
   "name": "template-egg",
-  "version": "1.0.0",
-  "description": "egg 常用代码模板",
+  "version": "0.2.0",
+  "description": "前后端分离 mysql 模板",
   "private": true,
   "egg": {
     "declarations": true
   },
   "dependencies": {
     "egg": "^2.15.1",
-    "egg-passport": "^2.1.1",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.2.5",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {
     "apidoc": "^0.25.0",
@@ -34,8 +30,8 @@
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-template-egg",
     "stop": "egg-scripts stop --title=egg-server-template-egg",
-    "dev": "egg-bin dev",
     "build:docs": "apidoc -i app/ -o app/public/docs",
+    "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
@@ -51,6 +47,6 @@
     "type": "git",
     "url": ""
   },
-  "author": "q-jason",
+  "author": "",
   "license": "MIT"
 }

@@ -5,7 +5,7 @@ const TABLE_NAME = ''
 const MODEL_NAME = ''
 
 module.exports = app => {
-  if (!MODEL_NAME) return
+  if (!MODEL_NAME || !TABLE_NAME) return
   
   const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
@@ -43,13 +43,14 @@ module.exports = app => {
      *    createdAt       - 为 false 时仅关闭 createdAt 管理，为字符串时则修改自动管理的字段名称
      *    updatedAt       - 同上
      **/
+    tableName: TABLE_NAME
   })
   
   /**
    *  配置字典
    *    as          - 指定当前源模型的别名，单数形式，如果你为一个表创建多次关联，或者不想使用定义模型时使用的名称
-   *    foreignKey  - 指定目标表中的外键名，默认的外键命名规为 源模型名 + 源模型主键名
-   *    targetKey   - 指定关联目标表的字段名，默认为目标表的主键字段
+   *    foreignKey  - 指定源模型表中的外键名，默认的外键命名规为 源模型名 + 源模型主键名
+   *    targetKey   - 指定目标模型表的字段名，默认为关联目标模型表的主键字段
    *    hooks       - 设置为 true 时，会在关联模型删除时执行 before-/afterDestroy 钩子方法
    *
    *    constraints - 是否在删除或更新时启用外键约束，默认 true
@@ -60,7 +61,7 @@ module.exports = app => {
   Model.associate = function () {
     /**
      *  一对一关系
-     *  关联关系(外键)存在于目标模型中
+     *  关联关系(外键)存在于目标模型表中
      *  onDelete 可选：CASCADE SET NULL
      *  onUpdate 可选：CASCADE
      **/
@@ -68,7 +69,7 @@ module.exports = app => {
     
     /**
      *  多对一关系
-     *  关联关系(外键)存在于源模型中
+     *  关联关系(外键)存在于源模型表中
      *  onDelete 可选：SET NULL NO ACTION
      *  onUpdate 可选：CASCADE
      **/

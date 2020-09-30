@@ -4,15 +4,13 @@
     "password": "q123456789",
     "database": "dev-template-egg",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "timezone": "+08:00"
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "q123456789",
     "database": "pro-template-egg",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "timezone": "+08:00"
+    "dialect": "mysql"
   }
 }

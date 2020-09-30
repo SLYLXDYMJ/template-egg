@@ -11,29 +11,24 @@ module.exports = appInfo => {
   const config = exports = {}
   
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1600249926236_6274'
+  config.keys = appInfo.name + '_1601448273546_757'
   
   // add your middleware config here
   config.middleware = [
     'error'
   ]
   
-  // 关闭 csrf
-  config.security = {
-    csrf: {
-      enable: false
-    }
+  exports.security = {
+    csrf: false
+  }
+  
+  config.sequelize = {
+    ...dbConfig[ process.env.NODE_ENV ]
   }
   
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
-    sequelize: {
-      ...dbConfig[ process.env.NODE_ENV ]
-    },
-    jwt: {
-      secret: '加密钥匙'
-    }
   }
   
   return {
