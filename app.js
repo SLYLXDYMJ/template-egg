@@ -40,6 +40,7 @@ class AppBootHook {
      *  在线上环境中每张表的首次使用 sync() 同步，修改字段时使用 migrations 同步
      **/
     await this.app.model.sync({
+      // force: process.env.NODE_ENV === 'development'
       alter: process.env.NODE_ENV === 'development'
     })
   }

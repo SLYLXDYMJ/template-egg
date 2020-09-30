@@ -1,7 +1,7 @@
 const { Service } = require('egg')
 const { Op } = require('sequelize')
 
-const MODEL_NAME = 'User'
+const MODEL_NAME = 'Role'
 
 module.exports = MODEL_NAME ? class extends Service {
   async findAll ({ where, offset, limit, order }) {
@@ -14,7 +14,7 @@ module.exports = MODEL_NAME ? class extends Service {
       }),
       data: await this.ctx.model[ MODEL_NAME ].findAll({
         where, offset, limit, order,
-        include: [ this.ctx.model.Role ]
+        include: [ this.ctx.model.Permission ]
       })
     }
   }
@@ -22,7 +22,7 @@ module.exports = MODEL_NAME ? class extends Service {
   async findOne (where) {
     return await this.ctx.model[ MODEL_NAME ].findOne({
       where,
-      include: [ this.ctx.model.Role ]
+      include: [ this.ctx.model.Permission ]
     })
   }
   

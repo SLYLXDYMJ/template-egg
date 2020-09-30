@@ -1,8 +1,8 @@
 /** 表名称 **/
-const TABLE_NAME = 'user'
+const TABLE_NAME = 'permission'
 
 /** 模型名称 **/
-const MODEL_NAME = 'User'
+const MODEL_NAME = 'Permission'
 
 module.exports = app => {
   if (!MODEL_NAME || !TABLE_NAME) return
@@ -24,15 +24,6 @@ module.exports = app => {
       type: INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
-    },
-    username: {
-      type: STRING,
-      unique: true,
-      allowNull: false
-    },
-    password: {
-      type: STRING,
       allowNull: false
     },
     createdAt: {
@@ -99,9 +90,6 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].belongsToMany(null, {})
-    app.model[ MODEL_NAME ].belongsToMany(app.model.Role, {
-      through: 'user_role'
-    })
   }
   
   return Model
