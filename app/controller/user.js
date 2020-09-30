@@ -265,3 +265,4 @@ module.exports = MODULE_NAME ? class extends Controller {
     )
   }
 } : null
+
