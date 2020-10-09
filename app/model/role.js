@@ -1,13 +1,13 @@
 /** 表名称 **/
-const TABLE_NAME = ''
+const TABLE_NAME = 'role'
 
 /** 模型名称 **/
-const MODEL_NAME = ''
+const MODEL_NAME = 'Role'
 
 module.exports = app => {
   if (!MODEL_NAME || !TABLE_NAME) return
   
-  const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
+  const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE, JSON } = app.Sequelize
   
   const Model = app.model.define(TABLE_NAME, {
     /**
@@ -25,6 +25,18 @@ module.exports = app => {
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
+    },
+    name: {
+      type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    description: {
+      type: TEXT,
+      allowNull: false
+    },
+    permission: {
+      type: JSON
     },
     createdAt: {
       type: DATE,
@@ -56,7 +68,6 @@ module.exports = app => {
    *    constraints - 是否在删除或更新时启用外键约束，默认 true
    *    onDelete    - 指定删除时关联表该如何操作
    *    onUpdate    - 指定更新时关联表该如何操作
-   *
    **/
   Model.associate = function () {
     /**
@@ -82,7 +93,7 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].hasMany(null, {})
-  
+    
     /**
      *  多对对关系
      *  会通过 sourceId 和 targetId 创建交叉表

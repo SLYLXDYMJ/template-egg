@@ -18,4 +18,3 @@ MODEL_NAME && _.each(helper.createModelBaseController(MODEL_NAME), (handler, key
 })
 
 module.exports = Controller
-

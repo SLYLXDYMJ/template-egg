@@ -86,6 +86,8 @@ module.exports = app => {
     /**
      *  多对对关系
      *  会通过 sourceId 和 targetId 创建交叉表
+     *  through  交叉表的名字（必须指定）
+     *
      *  onDelete 可选：SET NULL NO ACTION
      *  onUpdate 可选：CASCADE
      **/

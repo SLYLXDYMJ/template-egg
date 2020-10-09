@@ -1,8 +1,8 @@
 /** 表名称 **/
-const TABLE_NAME = ''
+const TABLE_NAME = 'user'
 
 /** 模型名称 **/
-const MODEL_NAME = ''
+const MODEL_NAME = 'User'
 
 module.exports = app => {
   if (!MODEL_NAME || !TABLE_NAME) return
@@ -24,6 +24,15 @@ module.exports = app => {
       type: INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false
+    },
+    username: {
+      type: STRING,
+      unique: true,
+      allowNull: false
+    },
+    password: {
+      type: STRING,
       allowNull: false
     },
     createdAt: {
@@ -56,7 +65,6 @@ module.exports = app => {
    *    constraints - 是否在删除或更新时启用外键约束，默认 true
    *    onDelete    - 指定删除时关联表该如何操作
    *    onUpdate    - 指定更新时关联表该如何操作
-   *
    **/
   Model.associate = function () {
     /**
@@ -82,7 +90,7 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].hasMany(null, {})
-  
+    
     /**
      *  多对对关系
      *  会通过 sourceId 和 targetId 创建交叉表
@@ -92,6 +100,9 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].belongsToMany(null, {})
+    app.model[ MODEL_NAME ].belongsToMany(app.model.Role, {
+      through: 'user_role'
+    })
   }
   
   return Model
