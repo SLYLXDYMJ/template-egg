@@ -103,6 +103,9 @@ module.exports = app => {
      *  onUpdate 可选：CASCADE
      **/
     // app.model[ MODEL_NAME ].belongsToMany(null, {})
+    app.model[ MODEL_NAME ].belongsToMany(app.model.User, {
+      through: 'user_role'
+    })
   }
   
   return Model

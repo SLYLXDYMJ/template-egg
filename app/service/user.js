@@ -3,7 +3,7 @@ const { Service: EggService } = require('egg')
 const helper = require('../extend/helper')
 
 /** 模型名称 **/
-const MODEL_NAME = 'Role'
+const MODEL_NAME = 'User'
 
 const Service = MODEL_NAME ? class extends EggService {
 } : null

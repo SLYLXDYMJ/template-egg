@@ -201,49 +201,43 @@ exports.registerRestful = function (app, prefix, ctorName, middleware = {}) {
  *  根据 model 封装统一的查询 server
  *  @param { String } modelName - 模型名称，首字母应该大写
  **/
-exports.createModelBaseService = function (modelName, include = [
-  'findAll',
-  'findOne',
-  'count',
-  'create',
-  'delete'
-]) {
+exports.createModelBaseService = function (modelName) {
   return {
-    async findAll ({ where, offset, limit, order }) {
+    async findAll ({ where, include, offset, limit, order }) {
       offset = offset && Number(offset)
       limit = limit && Number(limit)
       
       return {
         total: await this.ctx.model[ modelName ].count({
-          where
+          where, include
         }),
         data: await this.ctx.model[ modelName ].findAll({
-          where, offset, limit, order
+          where, include, offset, limit, order
         })
       }
     },
-    async findOne (where) {
+    async findOne ({ where, include }) {
       return await this.ctx.model[ modelName ].findOne({
-        where
+        where, include
       })
     },
-    async count (where) {
+    async count ({ where }) {
       return await this.ctx.model[ modelName ].count({
         where
       })
     },
-    async create (data) {
+    async create ({ data }) {
       return await this.ctx.model[ modelName ].create(
         data
       )
     },
-    async update (where, data) {
+    async update ({ where, data }) {
       return await this.ctx.model[ modelName ].update(
         data,
         { where }
       )
     },
-    async delete (where) {
+    async delete ({ where }) {
       return await this.ctx.model[ modelName ].destroy({
         where
       })
@@ -255,13 +249,7 @@ exports.createModelBaseService = function (modelName, include = [
  *  根据统一封装的查询 service 实现 model 基础增删改查控制器
  *   @param { String } modelName - 模型名称，首字母应该大写
  **/
-exports.createModelBaseController = function (modelName, include = [
-  'findAll',
-  'findOne',
-  'count',
-  'create',
-  'delete'
-]) {
+exports.createModelBaseController = function (modelName) {
   const SERVICE_NAME = modelName.toLowerCase()
   return {
     /**
@@ -318,7 +306,7 @@ exports.createModelBaseController = function (modelName, include = [
       
       return ctx.helper.success(
         await ctx.service[ SERVICE_NAME ].findOne({
-          id
+          where: { id }
         })
       )
     },
@@ -340,9 +328,9 @@ exports.createModelBaseController = function (modelName, include = [
       let { query } = ctx
       
       return ctx.helper.success(
-        await ctx.service[ SERVICE_NAME ].count(
-          ctx.helper.qsToOp(query)
-        )
+        await ctx.service[ SERVICE_NAME ].count({
+          where: ctx.helper.qsToOp(query)
+        })
       )
     },
     
@@ -360,9 +348,9 @@ exports.createModelBaseController = function (modelName, include = [
       let { body } = ctx.request
       
       return ctx.helper.success(
-        await ctx.service[ SERVICE_NAME ].create(
-          body
-        )
+        await ctx.service[ SERVICE_NAME ].create({
+          data: body
+        })
       )
     },
     
@@ -382,10 +370,10 @@ exports.createModelBaseController = function (modelName, include = [
       let { id } = params
       
       return ctx.helper.success(
-        await ctx.service[ SERVICE_NAME ].update(
-          { id },
-          body
-        )
+        await ctx.service[ SERVICE_NAME ].update({
+          where: { id },
+          data: body
+        })
       )
     },
     
@@ -404,10 +392,9 @@ exports.createModelBaseController = function (modelName, include = [
       
       return ctx.helper.success(
         await ctx.service[ SERVICE_NAME ].delete({
-          id
+          where: { id }
         })
       )
     }
   }
 }
-
