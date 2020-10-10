@@ -7,7 +7,7 @@ const MODEL_NAME = 'Role'
 module.exports = app => {
   if (!MODEL_NAME || !TABLE_NAME) return
   
-  const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE, JSON } = app.Sequelize
+  const { INTEGER, STRING, TEXT, FLOAT, BOOLEAN, ENUM, DATE } = app.Sequelize
   
   const Model = app.model.define(TABLE_NAME, {
     /**
@@ -28,15 +28,8 @@ module.exports = app => {
     },
     name: {
       type: STRING,
-      allowNull: false,
-      unique: true
-    },
-    description: {
-      type: TEXT,
+      unique: true,
       allowNull: false
-    },
-    permission: {
-      type: JSON
     },
     createdAt: {
       type: DATE,
@@ -68,6 +61,7 @@ module.exports = app => {
    *    constraints - 是否在删除或更新时启用外键约束，默认 true
    *    onDelete    - 指定删除时关联表该如何操作
    *    onUpdate    - 指定更新时关联表该如何操作
+   *
    **/
   Model.associate = function () {
     /**

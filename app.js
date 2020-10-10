@@ -17,12 +17,15 @@ class AppBootHook {
   async willReady () {
     // 所有的插件都已启动完毕，但是应用整体还未 ready
     // 可以做一些数据初始化等操作，这些操作成功才会启动应用
-  
+    
     // 初始化模型表结构
     await this.app.initModel()
     
     // 初始化权限表数据
     await this.app.initRole()
+    
+    // 初始化 passport
+    await this.app.initPassport()
   }
   
   async didReady () {

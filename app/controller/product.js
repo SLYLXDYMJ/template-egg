@@ -1,21 +1,17 @@
 const _ = require('lodash')
-const { Controller: EggController } = require('egg')
-const helper = require('../extend/helper')
-
-const MODEL_NAME = 'Product'
-
-const SERVICE_NAME = MODEL_NAME.toLowerCase()
-
-const Controller = MODEL_NAME ? class extends EggController {
-
-} : null
+const { RestFulController } = require('../core/rest-ful')
 
 /**
- *  生成模型基础的 "增删改查" controller
+ *  ! 必须有值，否则默认跳过
+ *  首字母大写，对应的模型名称
  **/
-MODEL_NAME && _.each(helper.createModelBaseController(MODEL_NAME), (handler, key) => {
-  Controller.prototype[ key ] = Controller.prototype[ key ] || handler
-})
+const MODEL_NAME = 'Product'
+
+const Controller = MODEL_NAME ? class extends RestFulController {
+  constructor (...args) {
+    super(...args)
+    this.SERVICE_NAME = MODEL_NAME.toLowerCase()
+  }
+} : null
 
 module.exports = Controller
-

@@ -1,3 +1,5 @@
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
+
 /**
  *  初始化模型表结构
  *  ! development 使用 sync 的方式
@@ -17,8 +19,8 @@ exports.initModel = async function () {
  *    user  - 普通用户
  *
  *  超级管理远默认账号密码
- *    admin
- *    admin
+ *    administrator
+ *    administrator
  **/
 exports.initRole = async function () {
   let ctx = this.createAnonymousContext()
@@ -47,10 +49,47 @@ exports.initRole = async function () {
   
   let admin = (await adminRole.getUsers()).length
   
-  admin || userRole.addUser(await ctx.service.user.create({
+  admin || adminRole.addUser(await ctx.service.user.create({
     data: {
-      username: 'admin',
-      password: 'admin'
+      username: 'administrator',
+      password: 'administrator'
     }
   }))
+}
+
+/**
+ *  初始化 jwt 验证
+ **/
+exports.initPassport = async function () {
+  let app = this
+  
+  // jwt
+  app.passport.use(new JwtStrategy(
+    {
+      secretOrKey: app.config.jwt.secret,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      passReqToCallback: true
+    },
+    (req, payload, done) => {
+      app.passport.doVerify(req, {
+        provider: 'jwt',
+        id: payload.id
+      }, done)
+    }
+  ))
+  
+  app.passport.verify(async (ctx, userParams) => {
+    let { provider } = userParams
+    
+    switch (provider) {
+      case 'jwt': {
+        return await ctx.service.user.findOne({
+          where: { id: userParams.id }
+        })
+      }
+      default: {
+        return null
+      }
+    }
+  })
 }

@@ -1,7 +1,13 @@
-/** 表名称 **/
+/**
+ *  ! 必须有值，否则默认跳过
+ *  对应的模型表名称
+ **/
 const TABLE_NAME = 'product'
 
-/** 模型名称 **/
+/**
+ *  ! 必须有值，否则默认跳过
+ *  首字母大写，对应的模型名称
+ **/
 const MODEL_NAME = 'Product'
 
 module.exports = app => {

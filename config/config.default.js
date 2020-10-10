@@ -18,12 +18,16 @@ module.exports = appInfo => {
     'error'
   ]
   
-  exports.security = {
+  config.security = {
     csrf: false
   }
   
   config.sequelize = {
     ...dbConfig[ process.env.NODE_ENV ]
+  }
+  
+  config.jwt = {
+    secret: '需自行配置'
   }
   
   // add your user config here

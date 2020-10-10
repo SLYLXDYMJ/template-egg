@@ -28,8 +28,8 @@ module.exports = app => {
     },
     username: {
       type: STRING,
-      unique: true,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: STRING,
@@ -65,6 +65,7 @@ module.exports = app => {
    *    constraints - 是否在删除或更新时启用外键约束，默认 true
    *    onDelete    - 指定删除时关联表该如何操作
    *    onUpdate    - 指定更新时关联表该如何操作
+   *
    **/
   Model.associate = function () {
     /**
