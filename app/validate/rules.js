@@ -25,6 +25,6 @@ exports.password = [
   },
   {
     message: '密码要求 8 ~ 16 位，首位字母',
-    pattern: /^[a-zA-Z][a-zA-Z0-9_]{8,16}$/
+    pattern: /^[a-zA-Z][a-zA-Z0-9_`]{8,16}$/
   }
 ]
