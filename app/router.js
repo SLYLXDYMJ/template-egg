@@ -4,6 +4,7 @@ module.exports = app => {
   let { router, controller, middleware } = app
   let ctx = app.createAnonymousContext()
   
+  let auth = app.passport.authenticate('jwt', { successRedirect: null })
   let isUser = middleware.permission('user', app)
   let isAdmin = middleware.permission('admin', app)
   
@@ -13,6 +14,6 @@ module.exports = app => {
   ctx.helper.registerRestful('/product', controller.product)
   ctx.helper.registerRestful('/user', controller.user)
   ctx.helper.registerRestful('/role', controller.role, {
-    findAll: [ isAdmin ]
+    findAll: [ auth, isAdmin ]
   })
 }
